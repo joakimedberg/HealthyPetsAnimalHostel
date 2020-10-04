@@ -15,36 +15,41 @@ class HealthyPetsAnimalHostel {
 
 	public static void main(String[] args) {
 
+		// a list that acts as database for the pets
 		List<Pet> pets = new ArrayList();
 
 		pets.add(new Dog("Sixten", 5));
 		pets.add(new Dog("Dogge", 10));
-		pets.add(new Cat("Dogge", 5));
+		pets.add(new Cat("Venus", 5));
 		pets.add(new Cat("Ove", 3));
 		pets.add(new Snake("Hypno", 1));
 
+		
+		// GUI
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 
-		JTextField name = new JTextField(10);
-		JButton search = new JButton("SÖK");
+		JLabel label = new JLabel("Vilket djur ska få mat?");
+		JTextField textField = new JTextField(10);
+		JButton searchButton = new JButton("SÖK");
 		JLabel result = new JLabel();
 
-		panel.add(new JLabel("Namn: "));
-		panel.add(name);
-		panel.add(search);
+		panel.add(label);
+		panel.add(textField);
+		panel.add(searchButton);
 		panel.add(result);
 
 		frame.add(panel);
-		frame.setSize(300, 100);
+		frame.setSize(200, 100);
 		frame.setVisible(true);
 
-		search.addActionListener(new ActionListener() {
+		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				// searches the list for a matching case and displays it with requested info.
 				for (Pet p : pets) {
-					if (p.getName().toLowerCase().contains(name.getText().toLowerCase())) {
-						result.setText(String.valueOf(p.eat()) + " gram " + p.category());
+					if (p.getName().toLowerCase().equals(textField.getText().toLowerCase())) {
+						result.setText(String.valueOf(p.eat()) + " gram " + p.getFeed());
 					}
 				}
 			}
@@ -53,6 +58,8 @@ class HealthyPetsAnimalHostel {
 }
 
 interface Foodable {
+	
+	// enum represents a pet and its related constant to calculate feed.
 	enum Portion {
 		DOG(100), CAT(150), SNAKE(20);
 
@@ -73,7 +80,7 @@ interface Foodable {
 	}
 
 	public int eat();
-	public String category();
+	public String getFeed();
 }
 
 abstract class Pet implements Foodable {
@@ -108,7 +115,7 @@ class Dog extends Pet implements Foodable {
 	}
 
 	@Override
-	public String category() {
+	public String getFeed() {
 		return "hundfoder";
 	}
 }
@@ -126,7 +133,7 @@ class Cat extends Pet implements Foodable {
 	}
 
 	@Override
-	public String category() {
+	public String getFeed() {
 		return "kattfoder";
 	}
 }
@@ -144,7 +151,7 @@ class Snake extends Pet implements Foodable {
 	}
 
 	@Override
-	public String category() {
-		return "ormfoder";
+	public String getFeed() {
+		return "ormpellets";
 	}
 }
