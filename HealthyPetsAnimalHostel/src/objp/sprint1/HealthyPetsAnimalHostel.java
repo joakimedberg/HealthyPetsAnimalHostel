@@ -15,51 +15,49 @@ class HealthyPetsAnimalHostel {
 
 	public static void main(String[] args) {
 
-		// a list that acts as database for the pets
+		
 		List<Pet> pets = new ArrayList();
 
+		// example of polymorphism 
 		pets.add(new Dog("Sixten", 5));
 		pets.add(new Dog("Dogge", 10));
 		pets.add(new Cat("Venus", 5));
 		pets.add(new Cat("Ove", 3));
 		pets.add(new Snake("Hypno", 1));
 
-		
 		// GUI
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 
-		JLabel label = new JLabel("Vilket djur ska få mat?");
-		JTextField textField = new JTextField(10);
-		JButton searchButton = new JButton("SÖK");
+		JTextField name = new JTextField(10);
+		JButton search = new JButton("SÖK");
 		JLabel result = new JLabel();
 
-		panel.add(label);
-		panel.add(textField);
-		panel.add(searchButton);
+		panel.add(new JLabel("Namn: "));
+		panel.add(name);
+		panel.add(search);
 		panel.add(result);
 
 		frame.add(panel);
-		frame.setSize(200, 100);
+		frame.setSize(300, 100);
 		frame.setVisible(true);
 
-		searchButton.addActionListener(new ActionListener() {
+		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				// searches the list for a matching case and displays it with requested info.
 				for (Pet p : pets) {
-					if (p.getName().toLowerCase().equals(textField.getText().toLowerCase())) {
-						result.setText(String.valueOf(p.eat()) + " gram " + p.getFeed());
-					}
+					if (p.getName().toLowerCase().equals(name.getText().toLowerCase())) {
+						result.setText(String.valueOf(p.eat()) + " gram " + p.category());
+						return;
+					} 
 				}
+				result.setText("hittades inte");
 			}
 		});
 	}
 }
 
 interface Foodable {
-	
-	// enum represents a pet and its related constant to calculate feed.
 	enum Portion {
 		DOG(100), CAT(150), SNAKE(20);
 
@@ -75,17 +73,19 @@ interface Foodable {
 			default:
 				break;
 			}
-			return (weight * 1000) / constant;
+			// converts weight from kg to g, divides it with the constant related to the pet
+			return (weight * 1000) / constant; 
 		}
 	}
 
 	public int eat();
-	public String getFeed();
+	public String category();
 }
 
+// a class with encapsulation
 abstract class Pet implements Foodable {
 	private String name;
-	private int weight;
+	private int weight; // kg
 
 	Pet(String name, int weight) {
 		this.name = name;
@@ -108,14 +108,16 @@ class Dog extends Pet implements Foodable {
 		super(name, weight);
 	}
 
+	// run-time polymorphism, method overriding
 	@Override
 	public int eat() {
+		// use of enum
 		return Foodable.Portion.DOG.getPortion(getWeight());
 
 	}
 
 	@Override
-	public String getFeed() {
+	public String category() {
 		return "hundfoder";
 	}
 }
@@ -133,7 +135,7 @@ class Cat extends Pet implements Foodable {
 	}
 
 	@Override
-	public String getFeed() {
+	public String category() {
 		return "kattfoder";
 	}
 }
@@ -143,7 +145,7 @@ class Snake extends Pet implements Foodable {
 	Snake(String name, int weight) {
 		super(name, weight);
 	}
-
+	
 	@Override
 	public int eat() {
 		return Foodable.Portion.SNAKE.getPortion(getWeight());
@@ -151,7 +153,7 @@ class Snake extends Pet implements Foodable {
 	}
 
 	@Override
-	public String getFeed() {
+	public String category() {
 		return "ormpellets";
 	}
 }
