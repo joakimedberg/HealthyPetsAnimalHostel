@@ -118,7 +118,7 @@ class Dog extends Pet implements Foodable {
 
 	@Override
 	public String category() {
-		return "hundfoder";
+		return Foodable.Portion.DOG.name();
 	}
 }
 
@@ -136,7 +136,7 @@ class Cat extends Pet implements Foodable {
 
 	@Override
 	public String category() {
-		return "kattfoder";
+		return Foodable.Portion.CAT.name();
 	}
 }
 
@@ -154,6 +154,6 @@ class Snake extends Pet implements Foodable {
 
 	@Override
 	public String category() {
-		return "ormpellets";
+		return Foodable.Portion.SNAKE.name();
 	}
 }
